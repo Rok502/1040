@@ -1,12 +1,475 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1040</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斩断贪婪之链，以清醒之姿涤荡虚妄，捍卫尊严与本真</title>
+    <style>
+        /* 全局样式 */
+        :root {
+            --background: #0a0a0a;
+            --foreground: #ffffff;
+            --primary: #3b82f6;
+            --primary-foreground: #ffffff;
+            --border: #2e2e2e;
+            --card-background: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --glass-background: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --button-background: rgba(255, 255, 255, 0.5);
+            --button-background-hover: rgba(255, 255, 255, 0.2);
+            --back-shadow: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="light"] {
+            --background: #f9fafb;
+            --foreground: #0a0a0a;
+            --primary: #2563eb;
+            --primary-foreground: #ffffff;
+            --border: #e5e5e5;
+            --card-background: rgba(0, 0, 0, 0.05);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --glass-background: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --button-background: rgba(0, 0, 0, 0.98);
+            --button-background-hover: rgba(0, 0, 0, 0.7);
+            --back-shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            letter-spacing: 1px;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 导航栏 */
+        nav {
+            background-color: var(--glass-background);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        nav ul li a {
+            color: var(--foreground);
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        /* 汉堡菜单 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background-color: var(--foreground);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        /* 移动端导航栏 */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            nav ul {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--background);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid var(--glass-border);
+                padding: 1rem 0;
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0.3s, opacity 0.3s;
+            }
+
+            nav ul.active {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li a {
+                padding: 0.5rem 1rem;
+                display: block;
+            }
+        }
+
+        /* 桌面端 Hover 展开菜单 */
+        @media (min-width: 769px) {
+
+            .hamburger:hover+ul,
+            nav ul:hover {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            nav ul {
+                /* visibility: hidden; */
+                /* opacity: 0; */
+                /* position: absolute; */
+                /* top: 100%; */
+                /* right: 0; */
+                /* width: 100%; */
+                display: flex;
+                gap: 1rem;
+                /* background-color: var(--background); */
+                /* backdrop-filter: blur(10px); */
+                border-bottom: none;
+                padding: 1rem 0;
+                transition: visibility 0.3s, opacity 0.3s;
+            }
+        }
+
+        /* 主题切换按钮 */
+        .links-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 4rem;
+        }
+
+        .links-wrapper button {
+            background: none;
+            border: none;
+            color: var(--primary-foreground);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background-color: var(--button-background);
+            transition: background-color 0.3s;
+        }
+
+        .links-wrapper button:hover,
+        .links-wrapper button:focus {
+            background-color: var(--button-background-hover);
+        }
+
+        .links-wrapper button:hover a,
+        .links-wrapper button:focus :any-link {
+            text-decoration-line: none;
+        }
+
+        .links-wrapper button a {
+            color: var(--primary-foreground);
+        }
+
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 主要内容区域 */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .home {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            height: 100vh;
+            margin-top: -5rem;
+        }
+
+        .home .slogan-wrapper {
+            /* padding: 10rem 4rem; */
+        }
+
+
+        .home h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .home p {
+            color: #a1a1a1;
+        }
+
+        p {
+            font-size: 1.1rem;
+        }
+
+        /* 防诈骗提示 */
+        .warning {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            /* border-radius: 8px; */
+        }
+
+        .warning h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 0;
+            color: #ef4444;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--background);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            margin: 0;
+            color: #71717a;
+        }
+
+        #back-to-top {
+            display: none;
+            position: fixed;
+            box-sizing: border-box;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--background);
+            color: var(--foreground);
+            cursor: pointer;
+            border-radius: 50%;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 4px var(--foreground);
+            transition: all 0.3s ease-in-out;
+        }
+
+        #back-to-top:hover,
+        #back-to-top:focus {
+            background-color: var(--foreground);
+            color: var(--background);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-inner">
+            <!-- <h1>谨防诈骗</h1> -->
+            <h1>1040</h1>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul id="nav-menu">
+                <li><a href="#home">主页</a></li>
+                <li><a href="#member">添加好友</a></li>
+                <li><a href="#event">洗脑诈骗</a></li>
+                <li><a href="#result">损失与伤害</a></li>
+                <li><a href="#warning">防诈骗提示</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主页 -->
+    <section id="home" class="section home">
+        <div class="slogan-wrapper">
+            <h2>斩断贪婪之链，以清醒之姿涤荡虚妄，捍卫尊严与本真</h2>
+            <p>2024年5月，我被王正芝骗到成都龙泉驿洗脑诈骗69,800元</p>
+        </div>
+        <div class="links-wrapper">
+            <button class="quick-read"> <a href="http://about.cn" target="_blank" rel="noopener noreferrer">
+                    快速阅读</a>
+            </button>
+            <button class="theme-toggle" id="theme-toggle">
+                <span>切换主题</span>
+                <span>🌙</span>
+            </button>
+
+        </div>
+    </section>
+
+    <section id="member" class="section">
+        <!-- This section will not take the full height and center content as per original instructions -->
+        <h2>主动添加好友</h2>
+        <p>2023年7月4日 10:59:52，王正芝从县教育精准扶贫QQ群添加我好友，
+            后添加微信，主动以各种方式跟我聊天，打视频，拉近关系和信任，
+            利用谎言一步步把我从沿海几千里外骗到传销窝点洗脑诈骗钱财。
+            <a href="https://rok502.github.io/1040/public/wechat_record/index.html" target="_blank">微信聊天记录入口</a>
+        </p>
+    </section>
+
+    <section id="event" class="section">
+        <h2>实施洗脑诈骗</h2>
+        <p>
+            2024年05月02日，我被王正芝用谎言骗到四川省成都市龙泉驿区（后因新老总被抓搬新津区），
+            王正芝利用大陆法律的仁慈与人性的善良，行欺骗之实，践踏信任，不停组织诈骗团伙对我实施洗脑诈骗，
+            以国家政策、西部大开发为幌子，不知羞耻，丧失良心，我多次明确表示拒绝、警告，
+            王正芝仍不择手段骗取我陆万玖仟捌佰元（69,800），次月王正芝与其团伙分赃。
+        </p>
+        <p>
+            我被王正芝骗到诈骗团伙当中，监控与精神限制我人身自由，倒卖我个人信息和状态，
+            每天给我讲课洗脑，让我诈骗亲朋好友、大学生、网友，为她及其团伙牟利，
+            我没干并择机逃离。临走时，王正芝明确表示负责，会归还我所有的钱（怎么来就怎么回去），
+            可过后又变口不还，一直欺诈我，无一句真话。
+        </p>
+    </section>
+
+    <section id="result" class="section">
+        <h2>损失与伤害</h2>
+        <p>王正芝不仅诈骗了我从学生5年来攒下的钱财，耽误我7个月的工期，
+            让我损失超过拾贰万玖仟玖佰元（129,900元，不包含各种生活机票路费），
+            还给我造成了一些难以磨灭的精神伤害。
+        </p>
+        <p>提醒各位朋友诈骗离你很近，别与诈骗人员有交集，不轻信任何人，守住口袋！</p>
+    </section>
+
+    <section id="warning" class="section">
+        <div class="warning">
+            <h3>谨防诈骗提示</h3>
+            <p>任何要求缴纳费用、发展下线、承诺高额回报的项目都可能是传销骗局！</p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>&copy; Rok502. All Rights Reserved.</p>
+        <!-- <p>警示语：传销害人害己，勤劳方能致富</p> -->
+    </footer>
+    <button id="back-to-top" title="回到顶部">Top</button>
+
+    <script>
+        // 主题切换逻辑
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('span:last-child');
+
+        // 检查本地存储的主题
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            body.setAttribute('data-theme', savedTheme);
+            themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        }
+
+        // 切换主题
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'light' ? '☀️' : '🌙';
+        });
+
+        // 汉堡菜单逻辑
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // 点击菜单项后隐藏菜单
+        const navLinks = document.querySelectorAll('#nav-menu li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // 点击其他地方关闭菜单
+        document.addEventListener('click', (event) => {
+            const isClickInsideMenu = navMenu.contains(event.target) || hamburger.contains(event.target);
+            if (!isClickInsideMenu) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // 回到顶部按钮逻辑
+        var backToTopButton = document.getElementById("back-to-top");
+
+        window.onscroll = function () {
+            const isShow = document.body.scrollTop > 20 || document.documentElement.scrollTop > 20;
+            backToTopButton.style.display = isShow ? "block" : "none";
+        };
+
+        backToTopButton.onclick = function () {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        };
+    </script>
+</body>
+
 </html>
