@@ -18,8 +18,12 @@
             --glass-background: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
             --button-background: rgba(255, 255, 255, 0.5);
-            --button-background-hover: rgba(255, 255, 255, 0.2);
+            --button-background-hover: rgba(255, 255, 255, 0.9);
             --back-shadow: rgba(255, 255, 255, 0.8);
+            --border: #27272a;
+            --footer-bg: #18181b;
+            --footer-text: #a1a1aa;
+            --footer-hover: #ffffff;
         }
 
         [data-theme="light"] {
@@ -33,8 +37,12 @@
             --glass-background: rgba(255, 255, 255, 0.8);
             --glass-border: rgba(0, 0, 0, 0.1);
             --button-background: rgba(0, 0, 0, 0.98);
-            --button-background-hover: rgba(0, 0, 0, 0.7);
+            --button-background-hover: rgba(0, 0, 0, 0.8);
             --back-shadow: rgba(0, 0, 0, 0.5);
+            --border: #e4e4e7;
+            --footer-bg: #fafafa;
+            --footer-text: #71717a;
+            --footer-hover: #09090b;
         }
 
         body {
@@ -97,8 +105,10 @@
             font-weight: 500;
         }
 
-        nav ul li a:hover {
+        nav ul li a:hover,
+        .resource-menu a:hover {
             color: var(--primary);
+            text-decoration: underline;
         }
 
         /* 汉堡菜单 */
@@ -191,12 +201,13 @@
         .links-wrapper button {
             background: none;
             border: none;
-            color: var(--primary-foreground);
+            color: var(--background);
             cursor: pointer;
             font-size: 1rem;
             padding: 0.5rem 1rem;
             border-radius: 8px;
-            background-color: var(--button-background);
+            /* background-color: var(--button-background); */
+            background-color: var(--foreground);
             transition: background-color 0.3s;
         }
 
@@ -211,7 +222,7 @@
         }
 
         .links-wrapper button a {
-            color: var(--primary-foreground);
+            color: var(--background);
         }
 
 
@@ -238,11 +249,6 @@
             height: 100vh;
             margin-top: -5rem;
         }
-
-        .home .slogan-wrapper {
-            /* padding: 10rem 4rem; */
-        }
-
 
         .home h2 {
             font-size: 2.5rem;
@@ -274,6 +280,65 @@
             color: #ef4444;
         }
 
+        .resource-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 3rem;
+            background-color: var(--background);
+            /* border-top: 1px solid var(--border); */
+            padding: 2rem 1.25rem;
+        }
+
+        /* 菜单项样式 */
+        .resource-menu {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .resource-menu a {
+            color: var(--foreground);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease-in-out;
+        }
+
+        /* 二维码样式 */
+        .qr-code {
+            text-align: center;
+        }
+
+        .qr-code img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-code p {
+            margin: 8px 0 0;
+            font-size: 0.75rem;
+            color: var(--foreground);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .resource-container {
+                flex-direction: column-reverse;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .resource-menu {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
         /* 页脚 */
         footer {
             background-color: var(--background);
@@ -282,6 +347,7 @@
             padding: 1rem 0;
             text-align: center;
             margin-top: 4rem;
+            font-size: 0.85rem;
         }
 
         footer p {
@@ -331,10 +397,12 @@
             </div>
             <ul id="nav-menu">
                 <li><a href="#home">主页</a></li>
-                <li><a href="#member">添加好友</a></li>
+                <li><a href="#member">添加网友</a></li>
                 <li><a href="#event">洗脑诈骗</a></li>
                 <li><a href="#result">损失与伤害</a></li>
                 <li><a href="#warning">防诈骗提示</a></li>
+                <li><a href="#download">下载资源</a></li>
+
             </ul>
         </div>
     </nav>
@@ -346,8 +414,8 @@
             <p>2024年5月，我被王正芝骗到成都龙泉驿洗脑诈骗69,800元</p>
         </div>
         <div class="links-wrapper">
-            <button class="quick-read"> <a href="http://about.cn" target="_blank" rel="noopener noreferrer">
-                    快速阅读</a>
+            <button class="quick-read"> <a href="https://www.alipan.com/s/wzixVTLvaLR" target="_blank">
+                    开始阅读</a>
             </button>
             <button class="theme-toggle" id="theme-toggle">
                 <span>切换主题</span>
@@ -368,15 +436,18 @@
     </section>
 
     <section id="event" class="section">
-        <h2>实施洗脑诈骗</h2>
+        <h2>洗脑诈骗</h2>
         <p>
             2024年05月02日，我被王正芝用谎言骗到四川省成都市龙泉驿区（后因新老总被抓搬新津区），
-            王正芝利用大陆法律的仁慈与人性的善良，行欺骗之实，践踏信任，不停组织诈骗团伙对我实施洗脑诈骗，
+            王正芝利用大陆法律的仁慈与人性的善良、他人认知盲区，行欺骗之实，践踏信任，不停组织诈骗团伙对我实施洗脑诈骗，
             以国家政策、西部大开发为幌子，不知羞耻，丧失良心，我多次明确表示拒绝、警告，
-            王正芝仍不择手段骗取我陆万玖仟捌佰元（69,800），次月王正芝与其团伙分赃。
+            王正芝仍不择手段骗取我
+            <a href="https://www.alipan.com/s/wzixVTLvaLR" target="_blank">陆万玖仟捌佰元（69,800）</a>
+            ，清静后我忽然醒悟，次月王正芝与其团伙分赃。
         </p>
         <p>
-            我被王正芝骗到诈骗团伙当中，监控与精神限制我人身自由，倒卖我个人信息和状态，
+            我被王正芝骗到诈骗团伙当中，<a href="https://www.alipan.com/s/wzixVTLvaLR"
+                target="_blank">监控与精神限制我人身自由</a>，倒卖我个人信息和状态，
             每天给我讲课洗脑，让我诈骗亲朋好友、大学生、网友，为她及其团伙牟利，
             我没干并择机逃离。临走时，王正芝明确表示负责，会归还我所有的钱（怎么来就怎么回去），
             可过后又变口不还，一直欺诈我，无一句真话。
@@ -386,8 +457,9 @@
     <section id="result" class="section">
         <h2>损失与伤害</h2>
         <p>王正芝不仅诈骗了我从学生5年来攒下的钱财，耽误我7个月的工期，
-            让我损失超过拾贰万玖仟玖佰元（129,900元，不包含各种生活机票路费），
-            还给我造成了一些难以磨灭的精神伤害。
+            <a href="https://www.alipan.com/s/wzixVTLvaLR"
+                target="_blank">让我损失超过拾贰万玖仟玖佰元（129,900元，不包含各种生活机票路费）</a>
+            ，还给我造成了一些难以磨灭的精神伤害。
         </p>
         <p>提醒各位朋友诈骗离你很近，别与诈骗人员有交集，不轻信任何人，守住口袋！</p>
     </section>
@@ -398,7 +470,19 @@
             <p>任何要求缴纳费用、发展下线、承诺高额回报的项目都可能是传销骗局！</p>
         </div>
     </section>
+    <!-- -->
 
+    <section id="download" class="section resource-container">
+        <div class="qr-code">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAD1UlEQVR4nO3dW44aMRRAQYiy/y2TBdCRnLGP3ZCq7+Ex6MhS3zbm+Xq9HrDar9NvgO8kLBLCIiEsEsIiISwSwiIhLBLCIiEsEsIiISwSvwf/7vl8pu/jBwZvn4+/88snvHz4+J37mYd/7mf+sGIRERYJYZEQFglhkRAWidFxw6Vt++VnLrzHhwjjo4HJQcDMDOIjPvOHFYuIsEgIi4SwSAiLhLBITI0bLk1eps5cThcvPTmDKKYVy5+wGGFYsUgIi4SwSAiLhLBICIvE+nHDQZPX9tu+vPA/nKJoxSIhLBLCIiEsEsIiISwSXzVuuLTt2xDjf2ncAD8kLBLCIiEsEsIiISwS68cNd7uW3vZtiOKQiEF3+8wfViwiwiIhLBLCIiEsEsIiMTVuuNtPJ9xwsrB8b8XdPvO/sWKREBYJYZEQFglhkRAWiecNb4z/2NlL8T2/jvkprFgkhEVCWCSERUJYJEZvQm87m3+5yRvGl4p3PvickxeP2y5IrVgkhEVCWCSERUJYJIRFYnTccMOr3PfnPHsf9yNuLW+7U27FIiEsEsIiISwSwiIhLBJTuxvGLz4PTiuKjQx7hgjFq2z7WoAVi4SwSAiLhLBICIuEsEic/Ir9nm80FJOF8Yv2ma9yTL7KuGKkYsUiISwSwiIhLBLCIiEsEuvPbiiOadizxWDyCSf/8eX7Ds5u67BikRAWCWGREBYJYZEQFolNZzds2yMw+NhtDm7WGFdMiKxYJIRFQlgkhEVCWCSERWLT2Q3F7oZ3n3JU5J6jKA7+GsjDikVEWCSERUJYJIRFQlgkps5uKA47uLR8d8Oewxcm7ZlfzD/8khWLhLBICIuEsEgIi4SwSIyOG7Ydozj56msf+0/PeensFoN32zaAWLFICIuEsEgIi4SwSAiLxMlfplhu23aASctffdv4w1GRHCYsEsIiISwSwiKx/gcEtpm5jNr2A38zn9vZS9dJViwSwiIhLBLCIiEsEsIiMTpuuHT2ru3Xv/S2j7d4ISsWCWGREBYJYZEQFglhkZgaN1wqDu9bbtsQYXzLw91GKk70446ERUJYJIRFQlgkhEVi/bjhoI/+Nv37XxanAW77NKxYJIRFQlgkhEVCWCSEReKrxg1nD5jYc6DDtpHK5HNasUgIi4SwSAiLhLBICIvE+nHD3c4ynLw+P/u1ixlnf07BikVCWCSERUJYJIRFQlgkpsYNN/y5infjb/LsqRPLtzxMsruBOxIWCWGREBYJYZEQFonn3TYj8B2sWCSERUJYJIRFQlgkhEVCWCSERUJYJIRFQlgkhEVCWCT+ANs7gbj2Sv/YAAAAAElFTkSuQmCC"
+                alt="二维码">
+        </div>
+        <div class="resource-menu">
+            <a href="https://www.alipan.com/s/wzixVTLvaLR" target="_blank">开始阅读</a>
+            <a href="https://rok502.github.io/1040/public/wechat_record/index.html" target="_blank">微信聊天记录HTML</a>
+            <a href="https://rok502.github.io/1040/public/%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95DOCX.rar" download>微信聊天记录DOCX</a>
+        </div>
+    </section>
     <!-- 页脚 -->
     <footer>
         <p>&copy; Rok502. All Rights Reserved.</p>
