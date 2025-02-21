@@ -551,11 +551,6 @@
         // 执行跳转逻辑
         async function goToUrl(url, retry) {
             try {
-                // 检查 URL 是否可用（这里用 fetch 检查头部信息）
-                const response = await fetch(url, { method: 'HEAD' });
-                if (!response.ok) {
-                    throw new Error(`跳转失败：${response.status}`);
-                }
                 window.location.href = url;
             } catch (error) {
                 if (retry < maxRetries) {
