@@ -475,10 +475,14 @@
         const body = document.body;
         const themeIcon = themeToggle.querySelector('span:last-child');
 
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             body.setAttribute('data-theme', savedTheme);
             themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        } else {
+            body.setAttribute('data-theme', systemTheme);
+            themeIcon.textContent = systemTheme === 'light' ? '☀️' : '🌙';
         }
 
         // 切换主题
